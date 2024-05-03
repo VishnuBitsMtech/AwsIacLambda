@@ -27,7 +27,6 @@ Resources:
         AllowHeaders: "'Content-Type'"
         AllowOrigin: "'*'"
 
-  # Lambda Functions
   GetTodosFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -83,4 +82,5 @@ Resources:
 Outputs:
   ApiURL:
     Description: API Gateway endpoint URL for Prod stage
-    Value: !Sub 'https://${TodosApi.ApiGatewayApiEndpoint}/Prod/'
+    Value: !Sub 'https://${TodosApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
+
