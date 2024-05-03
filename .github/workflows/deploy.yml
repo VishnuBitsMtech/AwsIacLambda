@@ -1,5 +1,5 @@
-# .github/workflows/deploy.yml
-name: Deploy to AWS
+# Deploy Lambda function through CI/CD 
+name: Deploy Lambda Function
 
 on:
   push:
@@ -8,24 +8,29 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to AWS
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
 
-    - name: Install SAM CLI
-      uses: aws-actions/setup-sam@v2
+      - name: Install AWS CLI and SAM CLI
+        run: |
+          pip install awscli
+          pip install aws-sam-cli
 
-    - name: Build and deploy
-      run: |
-        sam build
-        sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+      - name: Configure AWS Credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region ap-northeast-1
+
+      - name: Build and Deploy Lambda Function
+        run: |
+          sam build
+          echo "y" | sam deploy --stack-name LambdaFuncStack --region ap-northeast-1 --resolve-s3 --confirm-changeset false --capabilities CAPABILITY_IAM
