@@ -40,7 +40,10 @@ Resources:
           Properties:
             Path: /todos
             Method: GET
-            #RestApiId: !Ref TodosApi
+            RestApiId: !Ref TodosApi
+      Environment:
+        Variables:
+          TODOS_TABLE: !Ref TodoTable
 
   CreateTodoFunction:
     Type: AWS::Serverless::Function
@@ -54,7 +57,10 @@ Resources:
           Properties:
             Path: /todos
             Method: POST
-            #RestApiId: !Ref TodosApi
+            RestApiId: !Ref TodosApi
+      Environment:
+        Variables:
+          TODOS_TABLE: !Ref TodoTable
 
   # IAM Role for Lambda Functions
   LambdaRole:
@@ -77,5 +83,4 @@ Resources:
 Outputs:
   ApiURL:
     Description: API Gateway endpoint URL for Prod stage
-    # Value: !Sub 'https://${TodosApi.ApiGatewayApiEndpoint}/Prod/'
-    Value: 'https://${TodosApi.ApiGatewayApiEndpoint}/Prod/'
+    Value: !Sub 'https://${TodosApi.ApiGatewayApiEndpoint}/Prod/'
