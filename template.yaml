@@ -48,7 +48,7 @@ Resources:
   CreateTodoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: create_todo/
+      CodeUri: create_todos/
       Handler: app.lambda_handler
       Runtime: python3.9
       Events:
