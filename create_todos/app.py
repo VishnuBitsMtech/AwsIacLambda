@@ -1,5 +1,5 @@
 # create_todo/app.py
-import json 
+import json
 import os
 import uuid
 import boto3
